@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Aileen ❤️</title>
+    <!-- Google Font untuk kesan premium & romantis -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome untuk ikon tombol -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --pink-bg: #fff0f3;
+            --pink-premium: #ffb4c2;
+            --pink-dark: #ff4d6d;
+            --gold: #d4af37;
+            --text-color: #4a3e3d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--pink-bg);
+            color: var(--text-color);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Music Controls */
+        .music-controller {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid var(--pink-premium);
+        }
+
+        .music-controller i {
+            color: var(--pink-dark);
+            font-size: 1.2rem;
+        }
+
+        .music-controller.playing {
+            animation: pulse 1.5s infinite;
+            background: #fff;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 77, 109, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
+        }
+
+        /* Slider Framework */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            max-width: 500px;
+            margin: 0 auto;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease-in-out, visibility 0.8s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 30px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 2;
+        }
+
+        /* Start / Cover Slide */
+        .cover-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .heart-loader {
+            font-size: 5rem;
+            color: var(--pink-dark);
+            animation: heartbeat 1.2s infinite;
+            cursor: pointer;
+            filter: drop-shadow(0 4px 8px rgba(255,77,109,0.3));
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            20% { transform: scale(1.15); }
+            40% { transform: scale(1); }
+            60% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .cover-title {
+            font-family: 'Caveat', cursive;
+            font-size: 2.8rem;
+            color: var(--pink-dark);
+        }
+
+        .cover-subtitle {
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #8c7b7a;
+            font-weight: 600;
+        }
+
+        /* Premium UI Elements */
+        .photo-frame {
+            position: relative;
+            width: 80vw;
+            height: 80vw;
+            max-width: 280px;
+            max-height: 280px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 6px solid #fff;
+            margin-bottom: 30px;
+            transition: transform 0.5s ease;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--text-color);
+            max-width: 85%;
+        }
+
+        .highlight {
+            color: var(--pink-dark);
+            font-weight: 700;
+        }
+
+        .romantic-quote {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            color: var(--pink-dark);
+            margin-top: 10px;
+        }
+
+        /* Navigation Box */
+        .navigation-box {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+            padding: 0 30px;
+        }
+
+        .nav-btn {
+            background: #fff;
+            border: 2px solid var(--pink-premium);
+            color: var(--pink-dark);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255,180,194,0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, var(--pink-premium), var(--pink-dark));
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 15px rgba(255,77,109,0.4);
+        }
+
+        /* Floating Decorations */
+        .decor-element {
+            position: fixed;
+            pointer-events: none;
+            z-index: 99;
+            font-size: 1.5rem;
+            animation: floatUp 4s linear forwards;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) translateX(50px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Secret Letter Section */
+        .secret-envelope {
+            font-size: 4rem;
+            color: var(--pink-dark);
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .secret-envelope:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .secret-letter-box {
+            display: none;
+            background: var(--pink-bg);
+            border: 2px dashed var(--pink-premium);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            animation: fadeIn 0.5s ease forwards;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Interactivity slide 10 */
+        .choice-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            position: relative;
+            width: 100%;
+            justify-content: center;
+            height: 50px;
+        }
+
+        .btn-choice {
+            padding: 10px 25px;
+            border-radius: 20px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        #btn-yes {
+            background-color: #2ec4b6;
+            color: white;
+        }
+
+        #btn-no {
+            background-color: var(--pink-dark);
+            color: white;
+            position: absolute;
+        }
+
+        .character-box {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            height: 60px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Audio Element (Menggunakan file mp3 kamu) -->
+    <audio id="romantic-music" loop>
+        <source src="ssstik.io_1781715429261.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Floating Music Button -->
+    <div class="music-controller" id="music-btn" onclick="toggleMusic()">
+        <i class="fas fa-music"></i>
+    </div>
+
+    <div class="slider-container">
+
+        <!-- SLIDE 1: COVER -->
+        <div class="slide active" id="slide-1">
+            <div class="cover-content">
+                <div class="heart-loader" onclick="startExperience()">❤️</div>
+                <h1 class="cover-title">Untuk Aileen</h1>
+                <p class="cover-subtitle">Ketuk Jantung di Atas</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="slide">
+            <div class="photo-frame" style="transform: rotate(-3deg);">
+                <img src="IMG-20260619-WA0007.jpg" alt="Foto Aileen 1">
+            </div>
+            <p class="slide-text">Hai <span class="highlight">Aileen Cantik</span>, lewat website sederhana ini, aku cuma mau bilang sesuatu...</p>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="slide">
+            <div class="photo-frame" style="transform: rotate(3deg);">
+                <img src="IMG-20260622-WA0084.jpg" alt="Foto Aileen 2">
+            </div>
+            <p class="slide-text">Dari seluruh detak waktu yang berjalan, mengenalmu adalah salah satu bagian <span class="highlight">terindah</span> dalam hidupku.</p>
+        </div>
+
+        <!-- SLIDE 4 -->
+        <div class="slide">
+            <div class="photo-frame" style="transform: rotate(-2deg);">
+                <img src="IMG-20260625-WA0029.jpg" alt="Foto Aileen 3">
+            </div>
+            <p class="slide-text">Setiap senyuman kamu itu punya cara tersendiri buat bikin hari-hariku yang biasa jadi jauh lebih berwarna. ✨</p>
+        </div>
+
+        <!-- SLIDE 5 -->
+        <div class="slide">
+            <div class="photo-frame" style="transform: rotate(4deg);">
+                <img src="IMG-20260609-WA0052.jpg" alt="Foto Aileen 4">
+            </div>
+            <p class="slide-text">Aku suka cara kamu berbicara, cara kamu tertawa, bahkan hal-hal kecil yang ada di diri kamu.</p>
+        </div>
+
+        <!-- SLIDE 6 -->
+        <div class="slide">
+            <div class="photo-frame" style="transform: rotate(-4deg);">
+                <img src="IMG-20260622-WA0043.jpg" alt="Foto Aileen 5">
+            </div>
+            <p class="slide-text">Kamu itu berharga, lebih dari yang sering kamu bayangkan. Jangan pernah lupain itu, ya? 👑</p>
+        </div>
+
+        <!-- SLIDE 7 -->
+        <div class="slide">
+            <p class="romantic-quote">"Kamu adalah ketidakpastian yang paling aku semogakan."</p>
+            <p class="slide-text" style="margin-top: 20px;">Terima kasih ya sudah hadir dan mengizinkanku menjadi bagian dari harimu.</p>
+        </div>
+
+        <!-- SLIDE 8: PILIHAN INTERAKTIF -->
+        <div class="slide" id="slide-interactive">
+            <div class="character-box" id="char-box">😊</div>
+            <p class="slide-text" id="text-question">Nanti kalau kita ada waktu luang, kamu mau kan jalan atau sekadar mengobrol lagi sama aku?</p>
+            <div class="choice-container">
+                <button class="btn-choice" id="btn-yes" onclick="answerYes()">Mau!</button>
+                <button class="btn-choice" id="btn-no" onmouseover="moveNoButton()" onclick="moveNoButton()">Nggak</button>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: RESPONS MAU -->
+        <div class="slide" id="slide-response">
+            <div class="character-box">🥰</div>
+            <p class="slide-text">Yeeeay! Makasih yaa, aku tunggu banget momen itu. Jangan ingkar janji, lho! ❤️</p>
+        </div>
+
+        <!-- SLIDE 10: SURAT RAHASIA -->
+        <div class="slide">
+            <h2>Rahasia Kecilku 🤫</h2>
+            <p>Klik amplop di bawah ini jika kamu penasaran:</p>
+            
+            <div class="secret-envelope" onclick="openSecretLetter()">
+                <i class="fas fa-envelope-open-text"></i>
+            </div>
+
+            <div class="secret-letter-box" id="secret-letter">
+                <p><strong>Hai Sayang ❤️,</strong></p>
+                <p>Rahasia kecilku adalah... aku masih selalu kagum sama kamu setiap harinya. 😊</p>
+                <br>
+                <p>Terima kasih sudah membuat hari-hariku jadi jauh lebih indah.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: PENUTUP -->
+        <div class="slide">
+            <div class="photo-frame" style="transform: rotate(2deg);">
+                <img src="Impostor Gelap22 Jun 22_04.Selebgram Pro 9 .jpg" alt="Foto Penutup Aileen">
+            </div>
+            <div class="character-box" id="char-qito">I love you, Aileen 🤍</div>
+        </div>
+
+        <!-- NAVIGATION CONTROLS -->
+        <div class="navigation-box" id="nav-box" style="display: none;">
+            <button class="nav-btn" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Kembali</button>
+            <button class="nav-btn primary" id="next-btn" onclick="nextSlide()">Lanjut <i class="fas fa-arrow-right"></i></button>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const navBox = document.getElementById('nav-box');
+        const nextBtn = document.getElementById('next-btn');
+        const music = document.getElementById('romantic-music');
+        const musicBtn = document.getElementById('music-btn');
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            
+            // Atur visibilitas tombol navigasi
+            if (index === 0 || index === 7 || index === 8) {
+                navBox.style.display = 'none';
+            } else {
+                navBox.style.display = 'flex';
+            }
+
+            // Jika slide terakhir, hilangkan tombol lanjut
+            if (index === slides.length - 1) {
+                nextBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'flex';
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+                createFloatingHearts();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        function startExperience() {
+            currentSlide = 1;
+            showSlide(currentSlide);
+            if (music.paused) {
+                music.play().catch(e => console.log("Audio play blocked"));
+                musicBtn.classList.add('playing');
+            }
+            setInterval(createFloatingHearts, 2000);
+        }
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                musicBtn.classList.add('playing');
+            } else {
+                music.pause();
+                musicBtn.classList.remove('playing');
+            }
+        }
+
+        function createFloatingHearts() {
+            const symbols = ['❤️','💖','✨','💕','🌸'];
+            for(let i=0; i<3; i++) {
+                const el = document.createElement('div');
+                el.className = 'decor-element';
+                el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                el.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                document.body.appendChild(el);
+                
+                setTimeout(() => {
+                    el.remove();
+                }, 4000);
+            }
+        }
+
+        function moveNoButton() {
+            const btnNo = document.getElementById('btn-no');
+            const charBox = document.getElementById('char-box');
+            
+            charBox.innerText = '😜';
+            
+            const maxX = 120; 
+            const maxY = 40;  
+            
+            const randomX = (Math.random() - 0.5) * maxX;
+            const randomY = (Math.random() - 0.5) * maxY;
+            
+            btnNo.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        function answerYes() {
+            currentSlide = 8; // Pindah ke slide respons "Mau!"
+            showSlide(currentSlide);
+            
+            // Ledakan hati ekstra bahagia
+            for(let i=0; i<15; i++) {
+                setTimeout(createFloatingHearts, i * 100);
+            }
+
+            // Setelah 4 detik, otomatis pindah ke slide surat rahasia
+            setTimeout(() => {
+                currentSlide = 9;
+                showSlide(currentSlide);
+            }, 4000);
+        }
+
+        function openSecretLetter() {
+            const letter = document.getElementById('secret-letter');
+            if (letter.style.display === 'block') {
+                letter.style.display = 'none';
+            } else {
+                letter.style.display = 'block';
+                // Muncul navigasi setelah membaca surat rahasia
+                navBox.style.display = 'flex';
+            }
+        }
+    </script>
+</body>
+</html>
