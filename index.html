@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesuatu Untuk Aileen ❤️</title>
+    <!-- Google Fonts untuk kesan premium & scrapbook -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome untuk ikon tombol -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --pink-bg: #fff0f3;
+            --pink-premium: #ffb4c2;
+            --pink-dark: #ff4d6d;
+            --gold: #d4af37;
+            --text-color: #4a3e3d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--pink-bg);
+            color: var(--text-color);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Musik Kontrol Floading */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(255,77,109,0.2);
+            cursor: pointer;
+            border: 2px solid var(--pink-premium);
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--pink-dark);
+            transition: all 0.3s ease;
+            display: none; /* muncul setelah klik mulai */
+        }
+
+        .music-control.playing {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Overlay Awal / Gerbang Utama */
+        #gatekeeper {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #fff5f7 0%, #ffe3e8 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            transition: opacity 1s ease, visibility 1s;
+        }
+
+        #gatekeeper h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: var(--pink-dark);
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        #gatekeeper p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #726160;
+        }
+
+        .btn-premium {
+            background: linear-gradient(135deg, var(--pink-dark) 0%, #ff758f 100%);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 77, 109, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Quicksand', sans-serif;
+            border: 2px solid #fff;
+        }
+
+        .btn-premium:active {
+            transform: scale(0.95);
+        }
+
+        /* Buku / Scrapbook Slider Container */
+        .book-container {
+            width: 100%;
+            max-width: 450px;
+            height: 90vh;
+            max-height: 750px;
+            position: relative;
+            padding: 15px;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateX(30px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 180, 194, 0.3);
+            padding: 25px;
+            border: 8px solid #fff;
+            outline: 1px dashed var(--pink-premium);
+            background-image: radial-gradient(#fff0f3 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        /* Scrapbook Photo Frame */
+        .photo-frame {
+            width: 100%;
+            height: 50%;
+            background-color: #fafafa;
+            border: 12px solid #fff;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            transform: rotate(-2deg);
+            margin-bottom: 15px;
+            transition: transform 0.5s ease;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-frame::after {
+            content: '';
+            position: absolute;
+            top: -5px; left: 35%;
+            width: 30%; height: 25px;
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transform: rotate(2deg);
+        }
+
+        /* Animasi Karakter Beruang & Kelinci */
+        .character-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            font-size: 2.5rem;
+            margin: 10px 0;
+            min-height: 50px;
+        }
+
+        .char-bounce { animation: charBounce 2s infinite ease-in-out; }
+        .char-sway { animation: charSway 2.5s infinite ease-in-out; }
+
+        /* Teks Cerita */
+        .story-text {
+            text-align: center;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 5px;
+            font-weight: 500;
+        }
+
+        .story-text h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: var(--pink-dark);
+            margin-bottom: 10px;
+        }
+
+        .highlight-gold {
+            color: #bfa136;
+            font-weight: bold;
+            text-shadow: 0px 0px 1px rgba(0,0,0,0.01);
+        }
+
+        /* Navigasi Tombol Bawah */
+        .navigation-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .nav-btn {
+            background: var(--pink-bg);
+            border: 2px solid var(--pink-premium);
+            color: var(--pink-dark);
+            padding: 10px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Quicksand', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Surat Rahasia & Fitur Khusus */
+        .secret-envelope {
+            width: 120px;
+            height: 90px;
+            background: #ffcbd5;
+            margin: 20px auto;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 2px solid white;
+            transition: transform 0.3s;
+        }
+        
+        .secret-envelope:hover { transform: scale(1.05); }
+
+        .secret-letter-box {
+            display: none;
+            background: #fff;
+            border: 2px dashed var(--pink-premium);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            animation: fadeIn 0.5s ease;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        /* Efek Dekorasi Floating/Hujan */
+        .decor-element {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            animation: fall linear forwards;
+        }
+
+        /* Keyframes */
+        @keyframes fall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+        @keyframes charBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes charSway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Penyesuaian Responsif HP */
+        @media (max-width: 390px) {
+            .slide { padding: 15px; }
+            .story-text { font-size: 0.95rem; }
+            .story-text h2 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tombol Musik -->
+    <div class="music-control" id="musicControl" onclick="toggleMusic()">
+        <i class="fas fa-music"></i>
+    </div>
+
+    <!-- Audio Element Musik (Sudah Diarahkan ke Nama File Asli Kamu) -->
+    <audio id="backsound" loop>
+        <source src="ssstik.io_1781715429261.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Gerbang Masuk Halaman Utama -->
+    <div id="gatekeeper">
+        <div class="character-box char-bounce" style="font-size: 4rem;">🐻 ❤️ 🐰</div>
+        <h1>Qito & Aileen</h1>
+        <p>Sebuah cerita kecil khusus buat kamu...</p>
+        <button class="btn-premium" onclick="startWebsite()">Buka Hadiah ✨</button>
+    </div>
+
+    <!-- Konten Buku Cerita Digital -->
+    <div class="book-container">
+
+        <!-- SLIDE 1 -->
+        <div class="slide active">
+            <div class="character-box">
+                <span class="char-bounce">🐻</span>
+                <span style="font-size: 1.5rem; color: var(--pink-dark);">❤️</span>
+                <span class="char-sway">🐰</span>
+            </div>
+            <div class="story-text">
+                <h2>Qito ❤️ Aileen</h2>
+                <p>Sebuah cerita kecil yang tidak pernah aku sangka akan menjadi begitu berarti.</p>
+                <br>
+                <p>Hari ini aku ingin memberikan sesuatu yang sederhana.</p>
+                <br>
+                <p>Bukan hadiah yang mahal. Bukan hadiah yang sempurna. Tetapi sebuah cerita kecil yang dibuat khusus untukmu.</p>
+            </div>
+            <div class="navigation-box">
+                <div></div>
+                <button class="nav-btn" onclick="nextSlide()">Lanjut 👉</button>
+            </div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="slide">
+            <div class="photo-frame" style="transform: rotate(1deg);">
+                <img src="1000178535.jpg" alt="Cover Mirror Berdua">
+            </div>
+            <div class="story-text">
+                <p>Aku tidak pernah menyangka...</p>
+                <p>Dari sebuah perkenalan sederhana, kita bisa menjadi sedekat ini.</p>
+                <br>
+                <p>Dan sejak <span class="highlight-gold">25 Januari 2026</span>, hari-hariku terasa lebih berwarna.</p>
+            </div>
+            <div class="navigation-box">
+                <button class="nav-btn" onclick="prevSlide()">👈 Balik</button>
+                <button class="nav-btn" onclick="nextSlide()">Lanjut 👉</button>
+            </div>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="slide">
+            <div class="photo-frame" style="transform: rotate(-3deg);">
+                <img src="1000177690.jpg" alt="Foto Aileen">
+            </div>
+            <div class="character-box"><span class="char-sway">🐱✨</span></div>
+            <div class="story-text">
+                <p>Kadang aku masih heran.</p>
+                <p>Bagaimana satu pesan darimu bisa membuat hariku lebih baik.</p>
+                <p>Bagaimana satu senyumanmu bisa membuat suasana hatiku berubah.</p>
+                <br>
+                <p>Dan bagaimana tanpa sadar, aku mulai peduli lebih banyak daripada yang seharusnya dan menyimpan banyak harapan yang melibatkanmu.</p>
+            </div>
+            <div class="navigation-box">
+                <button class="nav-btn" onclick="prevSlide()">👈 Balik</button>
+                <button class="nav-btn" onclick="nextSlide()">Lanjut 👉</button>
+            </div>
+        </div>
+
+        <!-- SLIDE 4 -->
+        <div class="slide">
+            <div class="photo-frame" style="transform: rotate(2deg);">
+                <img src="1000178694.jpg" alt="Kenangan 1">
+            </div>
+            <div class="character-box"><span>🐻 💐 🐰</span></div>
+            <div class="story-text">
+                <p>Terima kasih karena sudah hadir.</p>
+                <p>Terima kasih karena sudah menjadi tempat berbagi cerita.</p>
+                <p>Terima kasih karena telah membuat hariku lebih berwarna dan menyenangkan.</p>
+                <br>
+                <p>Dan terima kasih karena sudah menjadi dirimu sendiri.</p>
+            </div>
+            <div class="navigation-box">
+                <button class="nav-btn" onclick="prevSlide()">👈 Balik</button>
+                <button class="nav-btn" onclick="nextSlide()">Lanjut 👉</button>
+            </div>
+        </div>
+
+        <!-- SLIDE 5 -->
+        <div class="slide">
+            <div class="photo-frame" style="transform: rotate(-1deg);">
+                <img src="1000169487.jpg" alt="Kenangan 2">
+            </div>
+            <div class="story-text">
+                <h2>Aku Bangga Padamu</h2>
+                <p>Aku bangga karena kamu tetap kuat saat keadaan tidak selalu mudah.</p>
+                <p>Aku bangga karena kamu terus berusaha menjadi lebih baik.</p>
+                <p>Aku bangga karena kamu tetap bertahan dan tidak menyerah.</p>
+                <br>
+                <p>Dan aku bangga karena aku bisa mengenal seseorang sebaik dirimu.</p>
+            </div>
+            <div class="navigation-box">
+                <button class="nav-btn" onclick="prevSlide()">👈 Balik</button>
+                <button class="nav-btn" onclick="nextSlide()">Lanjut 👉</button>
+            </div>
+        </div>
+
+        <!-- SLIDE 6 -->
+        <div class="slide">
+            <div class="character-box"><span>🎈 🐻 🎂 🐰 🎈</span></div>
+            <div class="story-text">
+                <h2 style="font-size: 2rem;">Happy Birthday Sayang ❤️</h2>
+                <p style="font-weight: bold; font-size: 1.2rem;" class="highlight-gold">Selamat ulang tahun yang ke-19 ya Sayang ❤️</p>
+                <br>
+                <p>Semoga semua impianmu perlahan menjadi kenyataan. Semoga langkahmu selalu dipenuhi hal-hal baik.</p>
+                <p>Semoga kesehatan, kebahagiaan, dan keberuntungan selalu menyertaimu.</p>
+                <br>
+                <p>Dan semoga senyumanmu tidak pernah hilang, karena senyumanmu adalah salah satu hal yang paling ingin aku lihat.</p>
+            </div>
+            <div class="navigation-box">
+                <button class="nav-btn" onclick="prevSlide()">👈 Balik</button>
+                <button class="nav-btn" onclick="nextSlide()">Lanjut 👉</button>
+            </div>
+        </div>
+
+        <!-- SLIDE 7 -->
+        <div class="slide">
+            <div class="character-box"><span class="char-bounce">🐻🎁🙈</span></div>
+            <div class="story-text">
+                <p>Maaf ya Sayang...</p>
+                <p>Aku belum bisa memberikan hadiah yang pantas tepat di hari ulang tahunmu. Aku tahu itu bukan hal yang ideal.</p>
+                <br>
+                <p>Tetapi aku ingin kamu tahu satu hal. Aku tidak pernah lupa. Dan aku tidak pernah menganggap hari spesialmu sebagai sesuatu yang biasa.</p>
+                <br>
+                <p>Mungkin hadiahnya belum sampai sekarang, tetapi niat dan perasaanku selalu ada untukmu.</p>
+            </div>
+            <div class="navigation-box">
+                <button class="nav-btn" onclick="prevSlide()">👈 Balik</button>
+                <button class="nav-btn" onclick="nextSlide()">Lanjut 👉</button>
+            </div>
+        </div>
+
+        <!-- SLIDE 8 -->
+        <div class="slide">
+            <div class="character-box"><span class="char-sway">🐼🐾</span></div>
+            <div class="story-text">
+                <h2>Permintaan Kecil...</h2>
+                <p>Kalau boleh meminta sesuatu, aku berharap kamu mau menungguku sedikit lebih lama.</p>
+                <br>
+                <p>Mungkin aku belum bisa memberikan banyak hal sekarang dan masih jauh dari sempurna. Tetapi aku selalu berusaha menjadi lebih baik.</p>
+                <br>
+                <p>Mungkin hadiahnya datang terlambat, tapi perasaan dan doaku untukmu tidak pernah terlambat.</p>
+            </div>
+            <div class="navigation-box">
+                <button class="nav-btn" onclick="prevSlide()">👈 Balik</button>
+                <button class="nav-btn" onclick="nextSlide()">Lanjut 👉</button>
+            </div>
+        </div>
+
+        <!-- SLIDE 9 -->
+        <div class="slide">
+            <div class="photo-frame" style="transform: rotate(2deg);">
+                <img src="1000174373.jpg" alt="Kenangan 3">
+            </div>
+            <div class="story-text">
+                <p>Aku tidak meminta banyak kepada masa depan.</p>
+                <p>Aku hanya berharap kita masih bisa membuat lebih banyak kenangan indah bersama. Lebih banyak tawa dan cerita.</p>
+                <br>
+                <p>Dan suatu hari nanti kita bisa tersenyum sambil berkata:</p>
+                <p style="font-style: italic; font-weight: bold;">"Ternyata kita sudah sejauh ini ya."</p>
+            </div>
+            <div class="navigation-box">
+                <button class="nav-btn" onclick="prevSlide()">👈 Balik</button>
+                <button class="nav-btn" onclick="nextSlide()">Lanjut 👉</button>
+            </div>
+        </div>
+
+        <!-- SLIDE 10 -->
+        <div class="slide">
+            <div class="story-text">
+                <h2>Rahasia Kecilku 🤫</h2>
+                <p>Klik amplop di bawah ini jika kamu penasaran...</p>
+                
+                <div class="secret-envelope" onclick="openSecretLetter()">
+                    <i class="fas fa-envelope-open-text" style="font-size: 2rem; color: white;"></i>
+                </div>
+
+                <div class="secret-letter-box" id="secretLetter">
+                    <p><strong>Hai Sayang ❤️</strong></p>
+                    <p>Rahasia kecilku adalah... aku masih sering tersenyum sendiri saat mengingatmu. Dan aku selalu bersyukur karena semesta mempertemukanku denganmu.</p>
+                    <br>
+                    <p>Terima kasih sudah membuat hari-hariku berwarna. Selamat ulang tahun, Sayang. Aku berharap semua doa baik menyertaimu.</p>
+                </div>
+            </div>
+            <div class="navigation-box">
+                <button class="nav-btn" onclick="prevSlide()">👈 Balik</button>
+                <button class="nav-btn" onclick="nextSlide()">Lanjut 👉</button>
+            </div>
+        </div>
+
+        <!-- SLIDE 11 -->
+        <div class="slide">
+            <div class="photo-frame" style="transform: rotate(-1deg);">
+                <img src="1000178621.jpg" alt="Foto Penutup Putih">
+            </div>
+            <div class="character-box">
+                <span id="char-qito" style="transition: all 1s ease;">🐻</span>
+                <span>❤️</span>
+                <span id="char-aileen" style="transition: all 1s ease;">🐰</span>
+            </div>
+            <div class="story-text" style="font-size: 0.9rem; max-height: 220px; overflow-y: auto;">
+                <p><strong>Happy Birthday Sayang ❤️</strong></p>
+                <p>Aku tidak tahu apa yang akan terjadi di masa depan. Tapi aku sangat bersyukur pernah mengenalmu dan sampai hari ini masih bisa melihat senyummu.</p>
+                <p>Jika suatu hari nanti kamu melihat ke belakang, aku berharap aku menjadi salah satu alasan kenapa kamu pernah tersenyum dengan tulus.</p>
+                <br>
+                <p>Dan semoga suatu hari nanti, aku bisa memberikan hadiah yang tidak terlambat lagi.</p>
+                <br>
+                <p style="font-family: 'Dancing Script', cursive; font-size: 1.4rem; color: var(--pink-dark);">Dari ku untuk perempuan yang kucintai ❤️🌹</p>
+            </div>
+            <div class="navigation-box">
+                <button class="nav-btn" onclick="prevSlide()">👈 Balik</button>
+                <div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const audio = document.getElementById('backsound');
+        const musicControl = document.getElementById('musicControl');
+        let decorInterval;
+
+        function startWebsite() {
+            document.getElementById('gatekeeper').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('gatekeeper').style.display = 'none';
+                musicControl.style.display = 'flex';
+            }, 1000);
+
+            // Putar audio secara otomatis setelah interaksi tombol klik
+            audio.play().then(() => {
+                musicControl.classList.add('playing');
+            }).catch(err => console.log("Autoplay diredam oleh browser: ", err));
+
+            // Mulai efek dekorasi falling otomatis
+            startDecorations();
+        }
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicControl.classList.add('playing');
+                musicControl.innerHTML = '<i class="fas fa-music"></i>';
+            } else {
+                audio.pause();
+                musicControl.classList.remove('playing');
+                musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+        }
+
+        function showSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+
+            // Trigger efek khusus tiap slide ganti
+            clearInterval(decorInterval);
+            if (currentSlide === 5) {
+                // Slide Ultah -> Hujan Confetti + Balon
+                decorInterval = setInterval(() => createDecor(['🎉','🎈','✨','🎂']), 300);
+            } else if (currentSlide === 2) {
+                // Slide Tentang Kamu -> Hujan Kelopak Sakura
+                decorInterval = setInterval(() => createDecor(['🌸','✨']), 400);
+            } else if (currentSlide === 3) {
+                // Slide Terima Kasih -> Hujan Kupu-kupu & Bunga
+                decorInterval = setInterval(() => createDecor(['🦋','🌹','🌻']), 400);
+            } else if (currentSlide === 10) {
+                // Slide Akhir -> Satukan Karakter 🐻 dan 🐰 di Tengah
+                setTimeout(() => {
+                    document.getElementById('char-qito').style.transform = 'translateX(10px)';
+                    document.getElementById('char-aileen').style.transform = 'translateX(-10px)';
+                }, 500);
+                decorInterval = setInterval(() => createDecor(['❤️','🌹','✨']), 300);
+            } else {
+                // Hujan Hati Default
+                startDecorations();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        function openSecretLetter() {
+            const letter = document.getElementById('secretLetter');
+            letter.style.display = letter.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function startDecorations() {
+            decorInterval = setInterval(() => {
+                createDecor(['❤️','💖','✨','💕']);
+            }, 500);
+        }
+
+        function createDecor(symbols) {
+            const el = document.createElement('div');
+            el.className = 'decor-element';
+            el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            el.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(el);
+
+            setTimeout(() => {
+                el.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
